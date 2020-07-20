@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Card from './card.component';
 import styled from 'styled-components';
 import {MdSearch} from 'react-icons/md';
+import { useSelector } from 'react-redux';
 
 const axios = require('axios');
 
@@ -18,7 +19,8 @@ const ScreenEnd = styled.div`
 
 const Icon = styled.span`
     font-size: 1.4rem;
-    color: #aaa;
+    background: none;
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
     height: 2.5em;
     pointer-events: none;
     position: absolute;
@@ -29,36 +31,45 @@ const Icon = styled.span`
 `;
 
 const SelectOpts = styled.select`
+    background: ${props => props.isDark ? '#2B3945' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    border-radius: 4px;
     padding-right: 2.5em;
     cursor: pointer;
     display: block;
     font-size: 1em;
     max-width: 100%;
     outline: none;
-    background-color: white;
-    border-color: #dbdbdb;
-    border-radius: 4px;
-    color: #363636;
-    -webkit-appearance: none;
     align-items: center;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: none;
+    border: none;
     display: inline-flex;
     font-size: 1rem;
     height: 2.5em;
     justify-content: flex-start;
-    line-height: 1.5;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: calc(0.75em - 1px);
-    padding-right: calc(0.75em - 1px);
-    padding-top: calc(0.5em - 1px);
-    position: relative;
-    vertical-align: top;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
     &::after{
-        border-coloer: #999;
-        content: '" "';
+        content: " ";
+        border-color: #111517;
+        z-index: 4;
+        top: 50%;
+        right: 4px;
+        position: absolute;
     }
+`;
+
+const MyInput = styled.input`
+    background: ${props => props.isDark ? '#2B3945' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    border: none;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+    ::placeholder {
+        color: ${props => props.isDark ? '#fff' : '#202C37'};
+    }
+`
+
+const MySection = styled.section`
+    background: ${props => props.isDark ? '#202C37' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
 `;
 
 export default function CardList(){
@@ -66,7 +77,7 @@ export default function CardList(){
     const [countries, setCountries] = useState([]);
     const [textFilter, setTextFilter] = useState('');
     const [regionFilter, setRegionFilter] = useState('');
-
+    let isDarkMode = useSelector(state => state.isDark);
 
     useEffect(() => {
         axios.get('https://restcountries.eu/rest/v2/all')
@@ -85,51 +96,54 @@ export default function CardList(){
         if(textFilter !== ''){
             displayed = displayed.filter(e => e.name.toLowerCase().match(reg));
         }
-        return displayed.map( country => {
-            return(
+        return displayed.map(( country, index) => {
+            return( 
                 <Card flag={country.flag} population={country.population}
-                    region={country.region} key={country.numericCode}
+                    region={country.region} key={index} 
                     code={country.alpha2Code}
                     countryName={country.name} capital={country.capital}
-                />                    
+                />                              
             )
         })
     }
 
     return(
-        <span>
-            <Container>
-            <div className="control has-icons-left has-icons-right">
-                <input 
-                    className="input"
-                    type="text"
-                    placeholder="Search for a country"
-                    onChange={(e) => setTextFilter(e.target.value)}
-                />
-                <Icon>
-                    <MdSearch/>
-                </Icon>
-            </div>
-                <ScreenEnd> 
-                <div className="field">
-                    <div className="control">
-                        <div className="select">
-                            <SelectOpts onChange={(e) => setRegionFilter(e.target.value)} className="has-text-grey">
-                                <option value=""></option>
-                                <option value="Africa">Africa</option>
-                                <option value="Americas">Americas</option>
-                                <option value="Asia">Asia</option>
-                                <option value="Europe">Europe</option>
-                                <option value="Oceania">Oceania</option>
-                            </SelectOpts>
-                        </div>
+        <MySection isDark={isDarkMode} className="section">
+            <div className="container" style={{top: '70px'}}>
+                <Container>
+                    <div className="control has-icons-left has-icons-right">
+                        <MyInput 
+                            isDark={isDarkMode}
+                            className="input"
+                            type="text"
+                            placeholder="Search for a country"
+                            onChange={(e) => setTextFilter(e.target.value)}
+                        />
+                        <Icon isDark={isDarkMode}>
+                            <MdSearch/>
+                        </Icon>
                     </div>
-                </div>
-                </ScreenEnd>
-            </Container>
-            <div className="columns is-gapless is-multiline">
-                {filterCountries()}
-            </div>     
-        </span>
+                    <ScreenEnd> 
+                        <div className="field">
+                            <div className="control">
+                                <div className="">
+                                    <SelectOpts isDark={isDarkMode} onChange={(e) => setRegionFilter(e.target.value)}>
+                                        <option value=""></option>
+                                        <option value="Africa">Africa</option>
+                                        <option value="Americas">Americas</option>
+                                        <option value="Asia">Asia</option>
+                                        <option value="Europe">Europe</option>
+                                        <option value="Oceania">Oceania</option>
+                                    </SelectOpts>
+                                </div>
+                            </div>
+                        </div>
+                    </ScreenEnd>
+                </Container>
+                <div className="columns is-gapless is-multiline">
+                    {filterCountries()}
+                </div>     
+            </div>
+        </MySection>
     );
 }

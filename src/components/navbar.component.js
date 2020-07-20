@@ -1,21 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import {FiMoon } from 'react-icons/fi';
+import {BsMoon} from 'react-icons/bs';
 import {Link}  from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const HeaderWrapper = styled.nav`
     width: 100%;
+    position: fixed;
     white-space: nowrap;
     padding: 20px;
     box-shadow: 0 2px 1px 0 rgba(0,0,0,0.05), 0 2px 1px -4px rgba(0,0,0,1), 0 1px 3px 0 rgba(0,0,0,0.05);
     display: flex;
-    background: ${props => props.isDark ? '#202C37' : '#fff'};
-    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    background: ${props => props.isDark ? '#2B3945' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#2B3945'};
 `;
 
 const Heading = styled.span`
-    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    color: ${props => props.isDark ? '#fff' : '#2B3945'};
     font-size: 1rem;
     font-weight: bold;
 `;
@@ -27,8 +29,8 @@ const DarkMode = styled.span`
 const DarkModeBtn = styled.button`
     border: none;
     padding: 0.2rem;
-    background: ${props => props.isDark ? '#202C37' : '#fff'};
-    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    background: ${props => props.isDark ? '#2B3945' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#2B3945'};
     font-size: 1rem;
     cursor: pointer;
     &:focus {
@@ -52,6 +54,13 @@ export default function Navbar(){
         dispatch({type: 'TOGGLE' });
     }
 
+    const switchIcon = () =>{
+        if(isDarkMode){
+            return <BsMoon/>
+        }
+        return <FiMoon/>
+    }
+
     return(
         <HeaderWrapper isDark={isDarkMode} className="navbar" role="navigation" aria-label="main navigation">
                 <div>
@@ -59,7 +68,7 @@ export default function Navbar(){
                 </div>
                 <NavEnd>
                     <DarkModeBtn isDark={isDarkMode} type="button" onClick={toggleDarkMode}>
-                        <FiMoon/> <DarkMode/> Dark Mode
+                        {switchIcon()} <DarkMode/> Dark Mode
                     </DarkModeBtn>
                 </NavEnd>
         </HeaderWrapper>

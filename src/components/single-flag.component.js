@@ -2,10 +2,13 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Link, useHistory, useParams} from 'react-router-dom';
 import {MdKeyboardBackspace} from 'react-icons/md';
+import { useSelector } from 'react-redux';
 
 const axios = require('axios');
 
 const Container = styled.div`
+    background: ${props => props.isDark ? '#2B3945' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
     margin: 0.4rem;
     padding: 0.4rem 0.8rem;
     width: min-content;
@@ -34,18 +37,32 @@ const BackBtn = styled.button`
 
 `;
 
-const BackIcon = () => {
-    const IconWrapper = styled.div`
-        margin: 0 8px 0 0;
-        padding-top: 3px
-    `
-    return <IconWrapper> <MdKeyboardBackspace /> </IconWrapper>
-}
+const MyStrong = styled.strong`
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    font-weight: 800;
+`;
+
+const MyTitle = styled.h3`
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
+    font-weight: 800;
+    font-size: 1.8rem;
+`;
+
+const IconWrapper = styled.div`
+    margin: 0 8px 0 0;
+    padding-top: 3px;
+`;
+
+const MySection = styled.section`
+    background: ${props => props.isDark ? '#202C37' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
+`;
 
 export default function SingleFlag(props){
 
     let history = useHistory();
     let { id } = useParams();
+    let isDarkMode = useSelector(state => state.isDark);
 
     const [country, setCountry] = useState({
         currencies: [], languages: []
@@ -67,7 +84,12 @@ export default function SingleFlag(props){
                         });
                         setBorders(names);
                     })
-
+                    .catch((err) =>{
+                        console.log(err);
+                        setBorders([{name: "I'm so lonelly, will you be my friend? 😣",
+                            code: ''
+                        }]);
+                    })
             })
             .catch((err) => {
                 console.log(err);
@@ -75,31 +97,32 @@ export default function SingleFlag(props){
     },[id]);
 
     return(
-        <span>
-            <BackBtn type="button" onClick={() => history.go(-1)}>
-                <Container className="card">
-                   <BackIcon/> back 
-                </Container>
-            </BackBtn>
-            <div className="columns">
-                <div className="column is-one-half">
-                    <figure className="image is-4by3">
-                        <img src={country.flag} alt="Flag"/>
-                    </figure>
-                </div>
-                <div className="column is-one-half">
-                    <h3 className="title is-3"> {country.name} </h3>
-                    <div className="columns">
-                        <div className="column is-half">
-                            <p><strong>Population: </strong> {country.nativeName} </p>
-                            <p><strong>Population: </strong> {country.population} </p>
-                            <p><strong>Region:   </strong> {country.region}</p>
-                            <p><strong>Sub Region:   </strong> {country.subregion}</p>
-                            <p><strong>Capital:  </strong> {country.capital} </p>
-                        </div>
-                        <div className="column is-half">
-                            <p><strong>Top Level Domain:   </strong> {country.topLevelDomain}</p>
-                            <p><strong>Currencies:   </strong> {
+        <MySection isDark={isDarkMode}  className="section">
+            <div className="container" style={{top: '70px'}}>
+                <BackBtn type="button" onClick={() => history.go(-1)}>
+                    <Container isDark={isDarkMode} className="card">
+                        <IconWrapper> <MdKeyboardBackspace /> </IconWrapper> back 
+                    </Container>
+                </BackBtn>
+                <div className="columns">
+                    <div className="column is-one-half">
+                        <figure className="image is-4by3">
+                            <img src={country.flag} alt={`${country.name} Flag`}/>
+                        </figure>
+                    </div>
+                    <div className="column is-one-half">
+                        <MyTitle isDark={isDarkMode} className="title is-3"> {country.name} </MyTitle>
+                        <div className="columns">
+                            <div className="column is-one-half">
+                                <p><MyStrong isDark={isDarkMode}>Population: </MyStrong> {country.nativeName} </p>
+                                <p><MyStrong isDark={isDarkMode}>Population: </MyStrong> {country.population} </p>
+                                <p><MyStrong isDark={isDarkMode}>Region:   </MyStrong> {country.region}</p>
+                                <p><MyStrong isDark={isDarkMode}>Sub Region:   </MyStrong> {country.subregion}</p>
+                                <p><MyStrong isDark={isDarkMode}>Capital:  </MyStrong> {country.capital} </p>
+                            </div>
+                        <div className="column is-one-half">
+                            <p><MyStrong isDark={isDarkMode}>Top Level Domain:   </MyStrong> {country.topLevelDomain}</p>
+                            <p><MyStrong isDark={isDarkMode}>Currencies:   </MyStrong> {
                                 country.currencies.map((currency, index) => {
                                     if(index !== country.currencies.length -1){
                                         return currency.name+',';
@@ -109,7 +132,7 @@ export default function SingleFlag(props){
                                     }
                                 })
                             }</p>
-                            <p><strong>Languages:   </strong> {
+                            <p><MyStrong isDark={isDarkMode}>Languages:   </MyStrong> {
                                 country.languages.map((language, index) => {
                                     if(index !== country.languages.length -1){
                                         return language.name+', ';
@@ -124,12 +147,12 @@ export default function SingleFlag(props){
                     </div>
 
                     <InlineDiv className="container">
-                        <strong>Borders Countries:</strong>
+                        <MyStrong isDark={isDarkMode}>Borders Countries:</MyStrong>
                         {
                             borders.map((country) => {
                                 return(
                                     <Link key={country.code} to={country.code}>
-                                        <Container className="card">
+                                        <Container isDark={isDarkMode} className="card">
                                             {country.name} 
                                         </Container>
                                     </Link>
@@ -138,8 +161,8 @@ export default function SingleFlag(props){
                         }
                     </InlineDiv>  
                 </div>
-            </div> 
-        </span>
-        
+            </div>
+            </div>
+        </MySection>
     );
 }

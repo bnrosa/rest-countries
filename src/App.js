@@ -12,14 +12,10 @@ function App() {
     <Router>
       <Provider store={store}>
         <Navbar/> 
-        <section className="section">
-          <div className="container"> 
             <Switch>
               <Route path="/" exact component={CardList} />
               <Route path="/:id" component={SingleFlag} />
-            </Switch> 
-          </div>
-        </section>
+            </Switch>
       </Provider>
     </Router>
   );
