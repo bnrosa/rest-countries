@@ -1,6 +1,7 @@
 # Rest Countries with React-redux and Styled Components 🇧🇷
 
 Implementation of Frontend Mentor's [REST Countries API with color theme switcher challenge](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca).
+You can see it live by clicking 👉 [here](https://ecstatic-shockley-079ca8.netlify.app/)
 
 ## Tech Stack 🤖
 
