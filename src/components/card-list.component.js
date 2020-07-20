@@ -9,6 +9,9 @@ const axios = require('axios');
 const Container = styled.div`
     width: 100%;
     display: flex;
+    @media (max-width: 769px) {
+        flex-direction: column;
+    }
 `;
 
 const ScreenEnd = styled.div`
@@ -54,6 +57,9 @@ const SelectOpts = styled.select`
         top: 50%;
         right: 4px;
         position: absolute;
+    }
+    @media (max-width: 769px) {
+        margin-top: 10px;
     }
 `;
 
@@ -110,7 +116,7 @@ export default function CardList(){
     return(
         <MySection isDark={isDarkMode} className="section">
             <div className="container" style={{top: '70px'}}>
-                <Container>
+                <Container className="is-desktop">
                     <div className="control has-icons-left has-icons-right">
                         <MyInput 
                             isDark={isDarkMode}
