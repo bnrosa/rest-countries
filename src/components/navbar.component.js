@@ -10,10 +10,12 @@ const HeaderWrapper = styled.nav`
     padding: 20px;
     box-shadow: 0 2px 1px 0 rgba(0,0,0,0.05), 0 2px 1px -4px rgba(0,0,0,1), 0 1px 3px 0 rgba(0,0,0,0.05);
     display: flex;
+    background: ${props => props.isDark ? '#202C37' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
 `;
 
 const Heading = styled.span`
-    color: black;
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
     font-size: 1rem;
     font-weight: bold;
 `;
@@ -25,8 +27,8 @@ const DarkMode = styled.span`
 const DarkModeBtn = styled.button`
     border: none;
     padding: 0.2rem;
-    background: ${props => props.isDark ? 'black' : 'white'};
-    color: ${props => props.isDark ? 'white' : 'black'};
+    background: ${props => props.isDark ? '#202C37' : '#fff'};
+    color: ${props => props.isDark ? '#fff' : '#202C37'};
     font-size: 1rem;
     cursor: pointer;
     &:focus {
@@ -51,9 +53,9 @@ export default function Navbar(){
     }
 
     return(
-        <HeaderWrapper className="navbar" role="navigation" aria-label="main navigation">
+        <HeaderWrapper isDark={isDarkMode} className="navbar" role="navigation" aria-label="main navigation">
                 <div>
-                    <Link to="/" ><Heading>Where in the world? </Heading></Link>
+                    <Link to="/" ><Heading isDark={isDarkMode}>Where in the world? </Heading></Link>
                 </div>
                 <NavEnd>
                     <DarkModeBtn isDark={isDarkMode} type="button" onClick={toggleDarkMode}>
