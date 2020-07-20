@@ -14,7 +14,6 @@
     "react-icons": "^3.10.0",
     "react-lazyload": "^3.0.0",
     "react-redux": "^7.2.0",
-    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
