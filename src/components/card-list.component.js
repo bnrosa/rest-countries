@@ -86,7 +86,7 @@ export default function CardList(){
     let isDarkMode = useSelector(state => state.isDark);
 
     useEffect(() => {
-        axios.get('https://restcountries.eu/rest/v2/all')
+        axios.get(`${process.env.REACT_APP_API_ENPOINT}/all`)
             .then((res) => {
                 setCountries([...res.data]);
             });
