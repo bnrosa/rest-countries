@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {Link}  from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import LazyLoad from 'react-lazyload';
 
 const Container = styled.div`
     margin: 2rem 0.5rem;
@@ -35,13 +34,9 @@ export default function Card(props){
         <div className="column is-one-quarter">
             <Container isDark={isDarkMode} className="card">
                 <div className="card-image">
-                    
-                        <LazyLoad height={140} once>
-                        <figure className="image is-4by3">
-                        <img src={props.flag} alt={`${props.countryName} Flag`} style={{"borderRadius": "10px 10px 0 0"}}/>
-                        </figure>
-                        </LazyLoad>
-                    
+                    <figure className="image is-4by3">
+                    <img loading="lazy" src={props.flag} alt={`${props.countryName} Flag`} style={{"borderRadius": "10px 10px 0 0"}}/>
+                    </figure>
                 </div>
                 <div className="card-content">
                     <div className="content">
