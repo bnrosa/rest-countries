@@ -71,13 +71,13 @@ export default function SingleFlag(props){
     const [borders, setBorders] = useState([])
 
     useEffect(() => {
-        axios.get(`https://restcountries.eu/rest/v2/alpha/${id}`)
+        axios.get(`${process.env.REACT_APP_API_ENPOINT}/alpha/${id}`)
             .then((res) => {
                 setCountry(res.data);
                 let regions = res.data.borders.map(code =>{
                     return code.toLowerCase();
                 })
-                axios.get(`https://restcountries.eu/rest/v2/alpha?codes=${regions.join(';')}`)
+                axios.get(`${process.env.REACT_APP_API_ENPOINT}/alpha?codes=${regions.join(';')}`)
                     .then((res) =>{
                         const names = res.data.map((border) => {
                             return {name: border.name, code: border.alpha2Code}
