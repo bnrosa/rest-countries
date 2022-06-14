@@ -71,29 +71,37 @@ export default function SingleFlag(props){
     const [borders, setBorders] = useState([])
 
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         axios.get(`${process.env.REACT_APP_API_ENPOINT}/alpha/${id}`)
             .then((res) => {
                 setCountry(res.data);
-                let regions = res.data.borders.map(code =>{
+                const regions = res.data.borders.map(code =>{
                     return code.toLowerCase();
-                })
-                axios.get(`${process.env.REACT_APP_API_ENPOINT}/alpha?codes=${regions.join(';')}`)
+                });
+                axios.get(`${process.env.REACT_APP_API_ENPOINT}/alpha?codes=${regions.join(',')}`)
                     .then((res) =>{
                         const names = res.data.map((border) => {
                             return {name: border.name, code: border.alpha2Code}
                         });
-                        setBorders(names);
+                        isMounted && setBorders(names);
                     })
                     .catch((err) =>{
                         console.log(err);
-                        setBorders([{name: "I'm so lonelly, will you be my friend? 😣",
+                        isMounted && setBorders([{name: "I'm so lonelly, will you be my friend? 😣",
                             code: ''
                         }]);
                     })
             })
             .catch((err) => {
-                console.log(err);
-            })
+                console.error(err);
+            });
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
     },[id]);
 
     return(

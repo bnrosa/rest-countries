@@ -86,11 +86,21 @@ export default function CardList(){
     let isDarkMode = useSelector(state => state.isDark);
 
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         axios.get(`${process.env.REACT_APP_API_ENPOINT}/all`)
             .then((res) => {
-                setCountries([...res.data]);
+                isMounted && setCountries([...res.data]);
+            })
+            .catch((err) => {
+                console.error(err);
             });
-    
+        
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
     }, []);
 
     const filterCountries = () => {
