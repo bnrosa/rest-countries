@@ -8,10 +8,9 @@ You can see it live by clicking 👉 [here](https://rest-countries-bnrosa.netlif
 - React
 - Redux (redux and react-redux)
 - Styled Components
-- React Lazyload
 - React Router
 - React Icons
-- Bulma + Node-SASS
+- Bulma CSS
 - Axios
 
 ## Available Scripts
