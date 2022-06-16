@@ -6,7 +6,7 @@ You can see it live by clicking 👉 [here](https://rest-countries-bnrosa.netlif
 ## Tech Stack 🤖
 
 - React
-- Redux (redux and react-redux)
+- Redux
 - Styled Components
 - React Router
 - React Icons
